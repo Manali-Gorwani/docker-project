@@ -1,0 +1,37 @@
+version: '3'
+services:
+        dbos:
+          image: mysql:latest
+          restart: always
+          environment:
+                MYSQL_ROOT_PASSWORD: rootpass
+                MYSQL_USER: manali
+                MYSQL_PASSWORD: mango
+                MYSQL_DATABASE: db
+          volumes:
+                - mysql_storage_new:/var/lib/html
+
+        nextcloudos:
+          image: nextcloud:latest
+          environment:
+                POSTGRES_DB: db
+                POSTGRES_USER: manali
+                POSTGRES_PASSWORD: mango
+                POSTGRES_HOST: dbos
+                NEXTCLOUD_ADMIN_USER: manali
+                NEXTCLOUD_ADMIN_PASSWORD: mango
+          restart: always
+          volumes:
+                - next_cloudstorage:/var/www/html/data
+
+          depends_on:
+                - dbos
+          ports:
+                - 5432:80
+volumes:
+        next_cloudstorage:
+        mysql_storage_new:
+
+
+
+
